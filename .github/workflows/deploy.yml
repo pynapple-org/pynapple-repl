@@ -1,73 +1,48 @@
-name: Build and upload to PyPI for pure python
+name: Build and Deploy
+
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build:
-    name: Build and test package
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-        # this is necessary for setuptools_scm to work properly with github
-        # actions, see https://github.com/pypa/setuptools_scm/issues/480 and
-        # https://stackoverflow.com/a/68959339
-      with:
-        fetch-depth: 0
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.x
-    - name: Build package
-      run: |
-        pip install build
-        python -m build --outdir dist/ --sdist --wheel
-    - name: Check there's only one sdist and one whl file created
-      shell: bash
-        # because the following two tests will be weird otherwise. see
-        # https://askubuntu.com/a/454568 for why this is the right way to handle
-        # it. using [[ BOOLEAN ]] || EXPR is a compact way of writing IF NOT
-        # BOOLEAN THEN EXPR in bash
-      run: |
-        [[ $(find dist/ -type f -name "*whl" -printf x | wc -c) == 1 ]] || exit 1
-        [[ $(find dist/ -type f -name "*tar.gz" -printf x | wc -c) == 1 ]] || exit 1
-#    - name: Check setuptools_scm version against git tag
-#      shell: bash
-#      run: |
-#        # we use the error code of this comparison: =~ is bash's regex
-#        # operator, so it checks whether the right side is contained in the
-#        # left side. In particular, we succeed if the path of the source code
-#        # ends in the most recent git tag, fail if it does not.
-#        [[ "$(ls dist/*tar.gz)" =~ "-$(git describe --tags).tar.gz" ]]
-#    - name: Check we can install from wheel
-#        # note that this is how this works in bash (different shells might be
-#        # slightly different). we've checked there's only one .whl file in an
-#        # earlier step, so the bit in `$()` will expand to that single file,
-#        # then we pass [dev] to get specify the optional dev dependencies, and
-#        # we wrap the whole thing in quotes so bash doesn't try to interpret the
-#        # square brackets but passes them directly to pip install
-#      shell: bash
-#      run: |
-#        pip install "$(ls dist/*whl)[dev]"
-#    - name: Run some tests
-#        # modify the following as necessary to e.g., run notebooks
-#      run: |
-#        pytest tests/
-    - uses: actions/upload-artifact@v4
-      with:
-        path: dist/*
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install the dependencies
+        run: |
+          python -m pip install -r requirements.txt
+      - name: Build the JupyterLite site
+        run: |
+          cp README.md content
+          jupyter lite build --contents content --output-dir dist
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
 
-  publish:
-    name: Upload release to PyPI
-    needs: [build]
-    environment: pypi
-    runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
     permissions:
-      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v4
-      with:
-        name: artifact
-        path: dist
-    - name: Publish package to pypi
-      uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
