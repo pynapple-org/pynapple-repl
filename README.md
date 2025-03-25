@@ -1,2 +1,2 @@
-# repl-pynapple
+# pynapple-repl
 REPL of pynapple to learn pynapple
