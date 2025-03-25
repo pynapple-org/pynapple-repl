@@ -27,8 +27,10 @@ jobs:
           jupyter lite build --contents content --output-dir dist
       - name: Add wheel to JupyterLite
         run: |
-          mkdir -p _output/pypi
-          cp pynapple-0.8.5-py3-none-any.whl _output/pypi/
+          python -c 
+          "
+          import micropip; await micropip.install("https://pynapple-org.github.io/pynapple-repl/files/pynapple-0.8.5-py3-none-any.whl")
+          "
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
