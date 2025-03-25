@@ -98,6 +98,9 @@ def strip_numba_from_pyproject(pyproject_path, out_path):
     if "setuptools_scm" in  tools:
         tools.pop("setuptools_scm")
 
+    # Changing repo name
+    doc['project']['name'] = "pynapple-repl"
+
     # Write the modified file back
     new_path = pathlib.Path(out_path) / pyproject_path.name
     new_path.write_text(tomlkit.dumps(doc))
