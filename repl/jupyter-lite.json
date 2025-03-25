@@ -6,6 +6,11 @@
         "jupyterlab-kernel-spy",
         "jupyterlab-tour"
       ]
+    },
+    "PipliteAddon": {
+      "piplite_urls": [
+        "https://raw.github.com/pynapple-org/pynapple-repl/main/pynapple-0.8.5-py3-none-any.whl",
+      ]
     }
   }
-  
+
