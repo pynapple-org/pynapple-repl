@@ -27,10 +27,7 @@ jobs:
           jupyter lite build --contents content --output-dir dist
       - name: Add wheel to JupyterLite
         run: |
-          python -c 
-          "
-          import micropip; await micropip.install("https://pynapple-org.github.io/pynapple-repl/files/pynapple-0.8.5-py3-none-any.whl")
-          "
+          python install_nap.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
