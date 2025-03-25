@@ -25,6 +25,10 @@ jobs:
         run: |
           cp README.md content
           jupyter lite build --contents content --output-dir dist
+      - name: Add wheel to JupyterLite
+        run: |
+          mkdir -p _output/pypi
+          cp pynapple-0.8.5-py3-none-any.whl _output/pypi/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
