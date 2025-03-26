@@ -33,7 +33,7 @@
         let pyodide = await loadPyodide();
         await pyodide.loadPackage("micropip");
         const micropip = pyodide.pyimport("micropip");
-        await micropip.install("https://github.com/pynapple-org/pynapple-repl/main/pynapple-repl/pynapple-0.8.5-py3-none-any.whl");
+        await micropip.install("https://pynapple-org.github.io/pynapple-repl/pynapple-0.8.5-py3-none-any.whl");
 
         pyodide.runPython(`
             import numpy as np
