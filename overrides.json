@@ -1,6 +1,5 @@
 {
     "@jupyterlab/console-extension:tracker": {
-        "interactionMode": "terminal",
-        "promptCellPosition": "left"
+        "interactionMode": "terminal"
     }
 }
