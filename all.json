@@ -1,0 +1,28 @@
+{
+  "pynapple": {
+    "releases": {
+      "0.8.5": [
+        {
+          "comment_text": "",
+          "digests": {
+            "md5": "ca009980fc6fa5072f35ab5a0edeaf78",
+            "sha256": "3aff34040e7572f920cfb308130e7d5cdd5baeff56930c5b1d0fdbcb0f0d4bb8"
+          },
+          "downloads": -1,
+          "filename": "pynapple-0.8.5-py3-none-any.whl",
+          "has_sig": false,
+          "md5_digest": "ca009980fc6fa5072f35ab5a0edeaf78",
+          "packagetype": "bdist_wheel",
+          "python_version": "py3",
+          "requires_python": ">=3.8",
+          "size": 121215,
+          "upload_time": "2025-03-25T18:58:38.359786Z",
+          "upload_time_iso_8601": "2025-03-25T18:58:38.359786Z",
+          "url": "./pynapple-0.8.5-py3-none-any.whl",
+          "yanked": false,
+          "yanked_reason": null
+        }
+      ]
+    }
+  }
+}
