@@ -25,14 +25,17 @@ jobs:
         run: |
           cp README.md content
           jupyter lite build --contents content --output-dir dist
-      - name: Add wheel to JupyterLite
-        run: |
-          python install_nap.py
+
+      - name: Copy wheel
+        run: cp dist/files/pynapple-0.8.5-py3-none-any.whl dist/extensions/@jupyterlite/pyodide-kernel-extension/static/pypi/.
+
+      - name: Edit all.json
+        run: python scripts/add_pynapple_to_json.py
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
-
   deploy:
     needs: build
     if: github.ref == 'refs/heads/main'
