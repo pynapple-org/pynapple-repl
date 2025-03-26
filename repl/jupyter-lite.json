@@ -6,6 +6,12 @@
         "jupyterlab-kernel-spy",
         "jupyterlab-tour"
       ]
+    },
+    "liteConfig": {
+        "ContentsManager": {
+            "start_kernel": true,
+            "startup_files": ["files/startup.py"]
+        }
     }
   }
 

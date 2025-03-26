@@ -14,28 +14,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install the dependencies
-        run: |
-          python -m pip install -r requirements.txt
-      - name: Build the JupyterLite site
-        run: |
-          cp README.md content
-          jupyter lite build --contents content --output-dir dist
-
-      - name: Copy wheel
-        run: cp dist/files/pynapple-0.8.5-py3-none-any.whl dist/extensions/@jupyterlite/pyodide-kernel-extension/static/pypi/.
-
-      - name: Edit all.json
-        run: python scripts/add_pynapple_to_json.py
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: pynapple-repl  # or adjust this if your static site is in a subfolder
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+#      - name: Setup Python
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.11'
+#      - name: Install the dependencies
+#        run: |
+#          python -m pip install -r requirements.txt
+#      - name: Build the JupyterLite site
+#        run: |
+#          cp README.md content
+#          jupyter lite build --contents content --output-dir dist
+
+#      - name: Copy wheel
+#        run: cp dist/files/pynapple-0.8.5-py3-none-any.whl dist/extensions/@jupyterlite/pyodide-kernel-extension/static/pypi/.
+#
+#      - name: Edit all.json
+#        run: python scripts/add_pynapple_to_json.py
+
+#      - name: Upload artifact
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          path: ./dist
   deploy:
     needs: build
     if: github.ref == 'refs/heads/main'
